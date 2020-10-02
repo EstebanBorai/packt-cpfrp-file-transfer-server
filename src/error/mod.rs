@@ -2,6 +2,7 @@ use std::fmt;
 use std::string::ToString;
 use actix_web::http::StatusCode;
 use actix_web::error::Error as ActixError;
+use actix_web::error::PayloadError;
 use actix_web::{ResponseError, HttpResponse};
 
 #[derive(Debug)]
@@ -47,6 +48,15 @@ impl From<ActixError> for Error {
       status_code: StatusCode::INTERNAL_SERVER_ERROR,
       message: error.to_string(),
     }
+  }
+}
+
+impl From<PayloadError> for Error {
+  fn from(payload_error: PayloadError) -> Self {
+      Self {
+        status_code: payload_error.error_response().status(),
+        message: format!("{:?}", payload_error)
+      }
   }
 }
 

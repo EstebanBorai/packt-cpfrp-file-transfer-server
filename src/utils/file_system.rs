@@ -1,15 +1,16 @@
 use crate::error::Error;
 use std::path::PathBuf;
 use std::env::current_dir;
-use std::fs::{read, write};
+use std::fs::{read, File};
+use std::io::prelude::*;
 
 /// Builds an absolute path to `archive` with the `path` provided
 /// by the request
-pub fn get_full_path(from_request: String) -> Result<PathBuf, Error> {
+pub fn get_full_path(from_request: &str) -> Result<PathBuf, Error> {
   let mut file_path = current_dir()?;
   
   file_path.push(PathBuf::from("archive"));
-  file_path.push(PathBuf::from(from_request.as_str()));
+  file_path.push(PathBuf::from(from_request));
 
   Ok(file_path)
 }
@@ -23,10 +24,12 @@ pub fn read_file(path: PathBuf) -> Result<String, Error> {
   Ok(String::from_utf8_lossy(file_contents.as_slice()).to_string())
 }
 
-pub fn new_file(filename: String, contents: String) -> Result<String, Error> {
-  let path = get_full_path(filename)?;
-  
-  write(path, contents.as_bytes())?;
+/// Create a new file or overwrites it if already exists
+pub fn new_file(filename: PathBuf, contents: String) -> Result<String, Error> {
+  let path = get_full_path(filename.to_str().unwrap())?;
+  let mut file = File::create(path)?;
 
-  Err(Error::new(400, "Unable to write a new file @{}"))
+  file.write_all(contents.as_bytes())?;
+
+  Ok(String::from("ok"))
 }

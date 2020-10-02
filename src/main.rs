@@ -13,6 +13,7 @@ fn main() -> std::io::Result<()> {
             .service(
                 web::resource("/{filename}")
                     .route(web::get().to(handler::read_file))
+                    .route(web::post().to_async(handler::create_file))
             )
             .default_service(web::route().to(handler::not_found))
     })
