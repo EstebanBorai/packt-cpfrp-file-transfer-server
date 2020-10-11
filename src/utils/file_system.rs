@@ -1,7 +1,7 @@
 use crate::error::Error;
 use std::path::{Path, PathBuf};
 use std::env::current_dir;
-use std::fs::{read_to_string, File, write};
+use std::fs::{read_to_string, File, write, remove_file};
 use std::io::prelude::*;
 
 /// Builds an absolute path to `archive` with the `path` provided
@@ -53,4 +53,12 @@ pub fn update_file(filename: PathBuf, contents: String) -> Result<String, Error>
   }
 
   Err(Error::new(404, &format!("File: \"{}\", doesn't exists", full_path.to_str().unwrap())))
+}
+
+/// Removes a file from the `archive` directory
+pub fn delete_file(filename: PathBuf) -> Result<(), Error> {
+  match remove_file(get_full_path(filename)?) {
+    Ok(()) => Ok(()),
+    Err(err) => Err(Error::from(err))
+  }
 }

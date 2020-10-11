@@ -15,6 +15,7 @@ fn main() -> std::io::Result<()> {
                     .route(web::get().to(handler::read_file))
                     .route(web::post().to_async(handler::create_file))
                     .route(web::put().to_async(handler::update_file))
+                    .route(web::delete().to(handler::delete_file))
             )
             .default_service(web::route().to(handler::not_found))
     })

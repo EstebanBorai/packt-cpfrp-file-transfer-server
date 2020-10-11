@@ -1,5 +1,5 @@
 [package]
-name = "packt-cpfrp-file-transfer-server"
+name = "simple-file-transfer-server"
 version = "0.1.0"
 authors = ["Esteban Borai <estebanborai@gmail.com>"]
 edition = "2018"
