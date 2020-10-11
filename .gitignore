@@ -1,1 +1,9 @@
+# cargo
 /target
+
+# project
+archive/**
+!archive/hello_world.txt
+
+# misc
+.DS_Store

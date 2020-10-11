@@ -1,5 +1,5 @@
 use std::fmt;
-use std::string::ToString;
+use std::string::{ToString, FromUtf8Error};
 use actix_web::http::StatusCode;
 use actix_web::error::Error as ActixError;
 use actix_web::error::PayloadError;
@@ -56,6 +56,15 @@ impl From<PayloadError> for Error {
       Self {
         status_code: payload_error.error_response().status(),
         message: format!("{:?}", payload_error)
+      }
+  }
+}
+
+impl From<FromUtf8Error> for Error {
+  fn from(utf8_error: FromUtf8Error) -> Self {
+      Self {
+        status_code: StatusCode::BAD_REQUEST,
+        message: utf8_error.to_string(),
       }
   }
 }
