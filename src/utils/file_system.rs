@@ -44,13 +44,13 @@ pub fn create_file(filename: PathBuf, contents: String) -> Result<String, Error>
 /// leads to an `Ok` wrapping an `String` with the final contents of the file
 pub fn update_file(filename: PathBuf, contents: String) -> Result<String, Error> {
   // check if the file exists
-  if Path::new(&filename).exists() {
-    let path = get_full_path(filename)?;
+  let full_path = get_full_path(filename)?;
 
-    write(&path, contents)?;
+  if Path::new(&full_path).exists() {
+    write(&full_path, contents)?;
 
-    return Ok(read_to_string(path)?);
+    return Ok(read_to_string(full_path)?);
   }
 
-  Err(Error::new(404, &format!("File: \"{}\", doesn't exists", filename.to_str().unwrap())))
+  Err(Error::new(404, &format!("File: \"{}\", doesn't exists", full_path.to_str().unwrap())))
 }
