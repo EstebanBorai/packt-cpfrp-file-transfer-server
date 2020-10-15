@@ -36,9 +36,9 @@ cargo run
 
 > Every filesystem operation will run in the included `archive` directory, if a request is send as `/hello_world.txt` then the path to the file in question will be `$PWD/archive/hello_world.txt`.
 
-Method | URL | Description | Req. Body | Res. Body
+Method | URI | Description | Req. Body | Res. Body
 --- | --- | --- | --- | ---
-**GET** | `/:filename` | Reads the file specified in the path | N/A | Contents of the file
+**GET** | `/:filename` | Reads the file specified in the path | N/A | `String`
 **POST** | `/:filename` | Creates a new file with the contents of the request body | `String` | `String`
 **PUT** | `/:filename` | Overwrites a file with the contents of the request body | `String` | `String`
 **DELETE** | `/:filename` | Removes the file specified in the path | N/A | N/A
